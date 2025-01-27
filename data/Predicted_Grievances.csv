@@ -1,0 +1,42 @@
+Grievance Description,clean_text,Predicted Category,Urgency Level
+"Train delayed by 2 hours, causing inconvenience.",train delayed by  hours causing inconvenience,nan::Train Delay,Medium
+Charging point not working in coach.,charging point not working in coach,nan::Charging point issue,Medium
+Overcrowding in the train.,overcrowding in the train,nan::Train Delay,Medium
+Toilet in coach is dirty.,toilet in coach is dirty,nan::Overcrowding,Medium
+"AC not working, too hot in the coach.",ac not working too hot in the coach,nan::Dirty coach,Medium
+Safety hazard due to slippery floor in coach.,safety hazard due to slippery floor in coach,nan::Dirty coach,Medium
+Food served was stale.,food served was stale,nan::Overcrowding,Medium
+Water not available in coach.,water not available in coach,nan::Dirty coach,Medium
+Seat not available despite having a confirmed ticket.,seat not available despite having a confirmed ticket,nan::Overcrowding,Medium
+Window glass broken in coach.,window glass broken in coach,nan::Dirty coach,Medium
+Train was cancelled without prior notice.,train was cancelled without prior notice,nan::Train Delay,Medium
+Heavy overcrowding at station.,heavy overcrowding at station,nan::Overcrowding,Medium
+Passengers fighting for seat occupancy.,passengers fighting for seat occupancy,nan::Seat occupying,Medium
+Charging port not working in my seat.,charging port not working in my seat,nan::Charging point issue,Medium
+Train arrived late at destination.,train arrived late at destination,nan::Train Delay,Medium
+Train delay due to technical issue.,train delay due to technical issue,nan::Train Delay,Medium
+Security personnel behaving rudely.,security personnel behaving rudely,nan::Overcrowding,Medium
+Window curtains torn and unusable.,window curtains torn and unusable,nan::Overcrowding,Medium
+Water spilled all over the floor.,water spilled all over the floor,nan::Water issue,Medium
+Toilet not cleaned properly.,toilet not cleaned properly,nan::Overcrowding,Medium
+Food was cold and tasteless.,food was cold and tasteless,nan::Overcrowding,Medium
+Train stopped for a long time without any explanation.,train stopped for a long time without any explanation,nan::Train Delay,Medium
+Foul smell from AC vents.,foul smell from ac vents,nan::Overcrowding,Medium
+Too much noise from train engine.,too much noise from train engine,nan::Train Delay,Medium
+Staff was unresponsive when I asked for help.,staff was unresponsive when i asked for help,Health::nan,Low
+Uncomfortable seats in coach.,uncomfortable seats in coach,nan::Dirty coach,Medium
+"Ticket payment failed, but money was deducted.",ticket payment failed but money was deducted,nan::Overcrowding,Medium
+Unhygienic conditions in the train.,unhygienic conditions in the train,nan::Train Delay,Medium
+Delayed train without any updates.,delayed train without any updates,nan::Train Delay,Medium
+Overcrowded train with no ventilation.,overcrowded train with no ventilation,nan::Train Delay,Medium
+Staff was uncooperative during ticket issue.,staff was uncooperative during ticket issue,nan::Overcrowding,Medium
+Non-functioning light in the coach.,non-functioning light in the coach,nan::Dirty coach,Medium
+Train platform was very dirty.,train platform was very dirty,nan::Train Delay,Medium
+High ticket prices for a poor service.,high ticket prices for a poor service,nan::Overcrowding,Medium
+Unexplained stoppage of train for long time.,unexplained stoppage of train for long time,nan::Train Delay,Medium
+No space for luggage in the coach.,no space for luggage in the coach,nan::Dirty coach,Medium
+Train service was disrupted due to strikes.,train service was disrupted due to strikes,nan::Dirty coach,Medium
+AC in coach was malfunctioning.,ac in coach was malfunctioning,nan::Dirty coach,Medium
+Broken door in train coach.,broken door in train coach,nan::Dirty coach,Medium
+Too many passengers standing in the aisles.,too many passengers standing in the aisles,nan::Overcrowding,Medium
+Unclean seats in train.,unclean seats in train,nan::Train Delay,Medium
