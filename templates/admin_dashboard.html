@@ -25,13 +25,15 @@
       <div class="dashboard-grid">
         <div class="staff-management">
           <h2>Staff Management</h2>
-          <button onclick="showAddStaffForm()">Add New Staff</button>
+          <button class="btn-primary" onclick="showAddStaffForm()">
+            Add New Staff
+          </button>
           <table>
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Username</th>
-                <th>Active Complaints</th>
+                <th>Assigned Complaints</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -42,8 +44,15 @@
                 <td>{{ staff.username }}</td>
                 <td>{{ staff.complaints|length }}</td>
                 <td>
-                  <button onclick="editStaff({{ staff.id }})">Edit</button>
-                  <button onclick="removeStaff({{ staff.id }})">Remove</button>
+                  <button class="btn-edit" onclick="editStaff({{ staff.id }})">
+                    Edit
+                  </button>
+                  <button
+                    class="btn-danger"
+                    onclick="removeStaff({{ staff.id }})"
+                  >
+                    Remove
+                  </button>
                 </td>
               </tr>
               {% endfor %}
@@ -54,29 +63,29 @@
         <div class="department-stats">
           <h2>Department Statistics</h2>
           <div class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card total">
               <h3>Total Complaints</h3>
               <p>{{ complaints|length }}</p>
             </div>
-            <div class="stat-card">
-              <h3>Unresolved</h3>
+            <div class="stat-card high">
+              <h3>High Urgency</h3>
               <p>
-                {{ complaints|selectattr('status', 'equalto',
-                'submitted')|list|length }}
+                {{ complaints|selectattr('urgency', 'equalto',
+                'High')|list|length }}
               </p>
             </div>
-            <div class="stat-card">
-              <h3>In Progress</h3>
+            <div class="stat-card medium">
+              <h3>Medium Urgency</h3>
               <p>
-                {{ complaints|selectattr('status', 'equalto',
-                'in_progress')|list|length }}
+                {{ complaints|selectattr('urgency', 'equalto',
+                'Medium')|list|length }}
               </p>
             </div>
-            <div class="stat-card">
-              <h3>Resolved</h3>
+            <div class="stat-card low">
+              <h3>Low Urgency</h3>
               <p>
-                {{ complaints|selectattr('status', 'equalto',
-                'resolved')|list|length }}
+                {{ complaints|selectattr('urgency', 'equalto',
+                'Low')|list|length }}
               </p>
             </div>
           </div>

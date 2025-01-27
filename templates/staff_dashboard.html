@@ -1,59 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Staff Dashboard</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
-    />
-  </head>
-  <body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
     <div class="dashboard-container">
-      <header>
-        <h1>Staff Dashboard</h1>
-        <div class="user-info">
-          <span>Welcome, {{ current_user.username }}</span>
-          <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
-        </div>
-      </header>
+        <header>
+            <h1>Staff Dashboard</h1>
+            <div class="user-info">
+                <span>Welcome, {{ current_user.username }}</span>
+                <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+            </div>
+        </header>
 
-      <div class="complaints-list">
-        <h2>Assigned Complaints</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Complaint ID</th>
-              <th>PNR</th>
-              <th>Category</th>
-              <th>Priority</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for complaint in complaints %}
-            <tr>
-              <td>{{ complaint.id }}</td>
-              <td>{{ complaint.pnr }}</td>
-              <td>{{ complaint.category }}</td>
-              <td>{{ complaint.priority }}</td>
-              <td>{{ complaint.status }}</td>
-              <td>
-                <button onclick="updateStatus({{ complaint.id }})">
-                  Update Status
-                </button>
-                <button onclick="viewDetails({{ complaint.id }})">
-                  View Details
-                </button>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+        <div class="complaints-list">
+            <h2>Assigned Complaints</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Complaint ID</th>
+                        <th>PNR</th>
+                        <th>Category</th>
+                        <th>Urgency</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in complaints %}
+                    <tr class="urgency-{{ complaint.urgency|lower }}">
+                        <td>{{ complaint.id }}</td>
+                        <td>{{ complaint.pnr }}</td>
+                        <td>{{ complaint.category }} ({{ complaint.sub_category }})</td>
+                        <td>{{ complaint.urgency }}</td>
+                        <td>{{ complaint.status|replace('_', ' ')|title }}</td>
+                        <td>
+                            <form class="status-form" method="POST" action="{{ url_for('update_status', complaint_id=complaint.id) }}">
+                                <select name="status" class="status-select">
+                                    <option value="submitted" {% if complaint.status == 'submitted' %}selected{% endif %}>Submitted</option>
+                                    <option value="in_progress" {% if complaint.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                    <option value="resolved" {% if complaint.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                                </select>
+                                {% if complaint.status == 'resolved' %}
+                                <textarea name="feedback" placeholder="Resolution feedback" required></textarea>
+                                {% endif %}
+                                <button type="submit" class="update-btn">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     <script src="{{ url_for('static', filename='js/staff.js') }}"></script>
-  </body>
+</body>
 </html>

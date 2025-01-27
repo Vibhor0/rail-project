@@ -1,72 +1,45 @@
+# models/p_g.py
 import pandas as pd
 import pickle
 import re
-from sklearn.feature_extraction.text import TfidfVectorizer
+from pathlib import Path
 
 def clean_text(text):
-    """Text cleaning (must match training preprocessing exactly)"""
-    if pd.isna(text):
-        return ""
     text = str(text).lower()
     text = re.sub(r'[^\w\s-]', '', text)
     text = re.sub(r'\d+', '', text)
     return text.strip()
 
-def split_category(combined):
-    """Mirror the category splitting from training"""
-    if pd.isna(combined):
-        return 'General', 'Uncategorized'
-    parts = str(combined).split('::')
-    return (
-        parts[0] if len(parts) > 0 else 'General',
-        parts[1] if len(parts) > 1 else 'Uncategorized'
-    )
+def predict_urgency(text):
+    urgency_keywords = {
+        'High': ['emergency', 'medical', 'accident', 'fire','derailment', 'security', 'unsafe', 'threat', 'danger', 'hazard', 'terrorist', 'violence', 'attack', 'crisis', 'critical', 'injury', 'death', 'disaster', 'fatal','bomb', 'rescue', 'evacuation', 'explosion', 'armed', 'distress'],
+        'Medium': ['delay', 'cancellation', 'reservation', 'refund', 'ticket', 'train delay', 'missed', 'late', 'unavailability', 'partial', 'inconvenience', 'boarding', 'rebooking', 'service', 'transport', 'connections','food', 'meal', 'service delay', 'reception', 'staff response', 'seat allocation'],
+        'Low': ['cleanliness', 'information', 'feedback', 'staff', 'facility', 'comfort', 'service quality', 'restroom', 'water', 'AC', 'maintenance', 'non-functioning', 'luggage', 'seating', 'noise', 'light', 'temperature', 'washroom', 'toilet', 'hygiene', 'staff attitude', 'wait time', 'communication', 'delay explanation', 'atmosphere']
+    }
+    cleaned = clean_text(text)
+    for level, keywords in urgency_keywords.items():
+        if any(kw in cleaned for kw in keywords):
+            return level
+    return 'Medium'
 
-# Load the trained pipeline (now handles both vectorizer and model)
-with open('models/category_model.pkl', 'rb') as f:
-    pipeline = pickle.load(f)
-
-URGENCY_KEYWORDS = {
-    'High': ['emergency', 'medical', 'accident', 'fire', 'derailment'],
-    'Medium': ['delay', 'cancellation', 'reservation', 'refund', 'ticket'],
-    'Low': ['cleanliness', 'information', 'feedback', 'staff', 'facility']
-}
-
-def predict_grievance(file_path):
-    # Load new data with proper error handling
-    try:
-        new_data = pd.read_csv(file_path, encoding='ISO-8859-1')
-    except FileNotFoundError:
-        raise ValueError(f"File not found at {file_path}")
+def predict_grievances(input_path):
+    model_path = Path(__file__).parent / 'category_model.pkl'
+    with open(model_path, 'rb') as f:
+        pipeline = pickle.load(f)
     
-    # Clean text using same preprocessing
+    new_data = pd.read_csv(input_path, encoding='ISO-8859-1')
     new_data['clean_text'] = new_data['Grievance Description'].apply(clean_text)
+    predictions = pipeline.predict(new_data['clean_text'])
     
-    # Predict combined categories
-    combined_preds = pipeline.predict(new_data['clean_text'])
+    results = []
+    for desc, pred in zip(new_data['Grievance Description'], predictions):
+        category, subcat = pred.split('::') if '::' in pred else (pred, 'General')
+        urgency = predict_urgency(desc)
+        results.append({
+            'description': desc,
+            'category': category,
+            'subcategory': subcat,
+            'urgency': urgency
+        })
     
-    # Split into Category/Sub-category columns
-    new_data[['Category', 'Sub-category']] = [
-        split_category(pred) for pred in combined_preds
-    ]
-    
-    # Assign urgency (modified for better keyword matching)
-    def assign_urgency(text):
-        cleaned = clean_text(text)
-        for level, keywords in URGENCY_KEYWORDS.items():
-            if any(kw in cleaned for kw in keywords):
-                return level
-        return 'Medium'
-    
-    new_data['Urgency Level'] = new_data['Grievance Description'].apply(assign_urgency)
-    
-    # Save while preserving original structure
-    new_data.to_csv('data/Predicted_Grievances.csv', index=False)
-    
-    return new_data[['Grievance Description', 'Category', 'Sub-category', 'Urgency Level']]
-
-if __name__ == "__main__":
-    input_path = 'data/new_complaints.csv'  # Ensure this file exists
-    results = predict_grievance(input_path)
-    print("Prediction Sample:")
-    print(results.head(3))
+    return results

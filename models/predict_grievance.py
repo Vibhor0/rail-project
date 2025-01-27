@@ -19,9 +19,9 @@ with open('models/category_model.pkl', 'rb') as f:
 
 # Define the urgency mapping and function
 URGENCY_KEYWORDS = {
-    'High': ['emergency', 'medical', 'accident', 'fire', 'derailment'],
-    'Medium': ['delay', 'cancellation', 'reservation', 'refund', 'ticket'],
-    'Low': ['cleanliness', 'information', 'feedback', 'staff', 'facility']
+    'High': ['emergency', 'medical', 'accident', 'fire','derailment', 'security', 'unsafe', 'threat', 'danger', 'hazard', 'terrorist', 'violence', 'attack', 'crisis', 'critical', 'injury', 'death', 'disaster', 'fatal','bomb', 'rescue', 'evacuation', 'explosion', 'armed', 'distress'],
+    'Medium': ['delay', 'cancellation', 'reservation', 'refund', 'ticket', 'train delay', 'missed', 'late', 'unavailability', 'partial', 'inconvenience', 'boarding', 'rebooking', 'service', 'transport', 'connections','food', 'meal', 'service delay', 'reception', 'staff response', 'seat allocation'],
+    'Low': ['cleanliness', 'information', 'feedback', 'staff', 'facility', 'comfort', 'service quality', 'restroom', 'water', 'AC', 'maintenance', 'non-functioning', 'luggage', 'seating', 'noise', 'light', 'temperature', 'washroom', 'toilet', 'hygiene', 'staff attitude', 'wait time', 'communication', 'delay explanation', 'atmosphere']
 }
 
 def assign_urgency(text):
