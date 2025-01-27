@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <header>
+        <h1>Staff Dashboard</h1>
+        <div class="user-info">
+          <span>Welcome, {{ current_user.username }}</span>
+          <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+      </header>
+
+      <div class="complaints-list">
+        <h2>Assigned Complaints</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Complaint ID</th>
+              <th>PNR</th>
+              <th>Category</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for complaint in complaints %}
+            <tr>
+              <td>{{ complaint.id }}</td>
+              <td>{{ complaint.pnr }}</td>
+              <td>{{ complaint.category }}</td>
+              <td>{{ complaint.priority }}</td>
+              <td>{{ complaint.status }}</td>
+              <td>
+                <button onclick="updateStatus({{ complaint.id }})">
+                  Update Status
+                </button>
+                <button onclick="viewDetails({{ complaint.id }})">
+                  View Details
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/staff.js') }}"></script>
+  </body>
+</html>

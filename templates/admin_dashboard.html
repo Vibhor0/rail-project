@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <header>
+        <h1>Department Admin Dashboard</h1>
+        <div class="user-info">
+          <span
+            >Welcome, {{ current_user.username }} - {{ current_user.department
+            }}</span
+          >
+          <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+      </header>
+
+      <div class="dashboard-grid">
+        <div class="staff-management">
+          <h2>Staff Management</h2>
+          <button onclick="showAddStaffForm()">Add New Staff</button>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Active Complaints</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for staff in staff %}
+              <tr>
+                <td>{{ staff.id }}</td>
+                <td>{{ staff.username }}</td>
+                <td>{{ staff.complaints|length }}</td>
+                <td>
+                  <button onclick="editStaff({{ staff.id }})">Edit</button>
+                  <button onclick="removeStaff({{ staff.id }})">Remove</button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="department-stats">
+          <h2>Department Statistics</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>Total Complaints</h3>
+              <p>{{ complaints|length }}</p>
+            </div>
+            <div class="stat-card">
+              <h3>Unresolved</h3>
+              <p>
+                {{ complaints|selectattr('status', 'equalto',
+                'submitted')|list|length }}
+              </p>
+            </div>
+            <div class="stat-card">
+              <h3>In Progress</h3>
+              <p>
+                {{ complaints|selectattr('status', 'equalto',
+                'in_progress')|list|length }}
+              </p>
+            </div>
+            <div class="stat-card">
+              <h3>Resolved</h3>
+              <p>
+                {{ complaints|selectattr('status', 'equalto',
+                'resolved')|list|length }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+  </body>
+</html>
